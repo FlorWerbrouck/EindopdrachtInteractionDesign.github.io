@@ -1,5 +1,8 @@
+const showResult = (data) => {
+	const title = document.querySelector('.js-title');
 
-
+	title.innerHTML = data.date_utc;
+}
 
 let getAPI = async () => {
 	// Eerst bouwen we onze url op
@@ -10,9 +13,10 @@ let getAPI = async () => {
 	const data = await request.json();
 	console.log(data);
 
+	showResult(data);
+
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-	
 	getAPI();
 });
