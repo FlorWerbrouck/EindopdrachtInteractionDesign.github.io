@@ -1,7 +1,35 @@
-const showResult = (data) => {
-	const title = document.querySelector('.js-title');
+var title;
+var nextLaunch;
 
-	title.innerHTML = data.date_utc;
+function getTimeRemaining(endtime){
+	const total = Date.parse(endtime) - Date.parse(new Date());
+	const seconds = Math.floor( (total/1000) % 60 );
+	const minutes = Math.floor( (total/1000/60) % 60 );
+	const hours = Math.floor( (total/(1000*60*60)) % 24 );
+	const days = Math.floor( total/(1000*60*60*24) );
+  
+	return {
+	  total,
+	  days,
+	  hours,
+	  minutes,
+	  seconds
+	};
+  }
+
+const showResult = () => {
+
+	var intervalId = window.setInterval(function(){
+		replaceResult()
+	  }, 1000);
+};
+
+function replaceResult(){
+
+	t = getTimeRemaining(nextLaunch)
+
+	title.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
+	console.log('test');
 }
 
 let getAPI = async () => {
@@ -12,11 +40,13 @@ let getAPI = async () => {
 	const request = await fetch(`${ENDPOINT}`);
 	const data = await request.json();
 	console.log(data);
+	nextLaunch = data.date_utc;
 
-	showResult(data);
+	showResult();
 
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+	title = document.querySelector('.js-title');
 	getAPI();
 });
