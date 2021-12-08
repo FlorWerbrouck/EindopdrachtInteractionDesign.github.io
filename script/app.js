@@ -1,9 +1,6 @@
 
 
 
-
-
-
 let getAPI = async () => {
 	// Eerst bouwen we onze url op
 	const ENDPOINT = `https://api.spacexdata.com/v4/launches/next`;
