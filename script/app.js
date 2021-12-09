@@ -1,5 +1,8 @@
-var title;
+var htmlTitle;
+var htmlDate;
+var htmlRocket;
 var nextLaunch;
+var rocket;
 
 function getTimeRemaining(endtime){
 	const total = Date.parse(endtime) - Date.parse(new Date());
@@ -19,6 +22,12 @@ function getTimeRemaining(endtime){
 
 const showResult = () => {
 
+	t = getTimeRemaining(nextLaunch)
+
+	htmlTitle.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
+	htmlDate.innerHTML = nextLaunch;
+	htmlRocket.innerHTML = rocket;
+
 	var intervalId = window.setInterval(function(){
 		replaceResult()
 	  }, 1000);
@@ -28,25 +37,33 @@ function replaceResult(){
 
 	t = getTimeRemaining(nextLaunch)
 
-	title.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
-	console.log('test');
+	htmlTitle.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
 }
 
 let getAPI = async () => {
 	// Eerst bouwen we onze url op
 	const ENDPOINT = `https://api.spacexdata.com/v4/launches/next`;
+	const ENDPOINT2 = `https://api.spacexdata.com/v4/rockets/`;
 
 	// Met de fetch API proberen we de data op te halen.
 	const request = await fetch(`${ENDPOINT}`);
-	const data = await request.json();
-	console.log(data);
-	nextLaunch = data.date_utc;
+	const dataLaunch = await request.json();
+	var utcDate = dataLaunch.date_utc;
+	var localDate = new Date(utcDate);
+	
+	nextLaunch = localDate;
+	
+	const request2 = await fetch(`${ENDPOINT2 + dataLaunch.rocket}`);
+	const dataRocket = await request2.json();
+	rocket = dataRocket.name;
 
 	showResult();
 
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-	title = document.querySelector('.js-title');
+	htmlTitle = document.querySelector('.js-title');
+	htmlDate = document.querySelector('.js-date');
+	htmlRocket = document.querySelector('.js-rocket');
 	getAPI();
 });
