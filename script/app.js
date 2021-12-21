@@ -1,8 +1,11 @@
-var htmlTitle;
+var htmlFlight;
+var htmlTime;
 var htmlDate;
 var htmlRocket;
+
 var nextLaunch;
 var rocket;
+var flightnr;
 
 function getTimeRemaining(endtime){
 	const total = Date.parse(endtime) - Date.parse(new Date());
@@ -24,7 +27,8 @@ const showResult = () => {
 
 	t = getTimeRemaining(nextLaunch)
 
-	htmlTitle.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
+	htmlFlight.innerHTML = '<bold>Flight #:</bold> ' +  flightnr;
+	htmlTime.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
 	htmlDate.innerHTML = nextLaunch;
 	htmlRocket.innerHTML = rocket;
 
@@ -37,7 +41,7 @@ function replaceResult(){
 
 	t = getTimeRemaining(nextLaunch)
 
-	htmlTitle.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
+	htmlTime.innerHTML = t.days + ' days, ' + t.hours + ' hours, ' + t.minutes + ' minutes and ' + t.seconds + ' seconds';
 }
 
 let getAPI = async () => {
@@ -52,6 +56,8 @@ let getAPI = async () => {
 	var localDate = new Date(utcDate);
 	
 	nextLaunch = localDate;
+	flightnr = dataLaunch.flight_number;
+	console.log(flightnr);
 	
 	const request2 = await fetch(`${ENDPOINT2 + dataLaunch.rocket}`);
 	const dataRocket = await request2.json();
@@ -62,7 +68,8 @@ let getAPI = async () => {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-	htmlTitle = document.querySelector('.js-title');
+	htmlFlight = document.querySelector('.js-flight');
+	htmlTime = document.querySelector('.js-time');
 	htmlDate = document.querySelector('.js-date');
 	htmlRocket = document.querySelector('.js-rocket');
 	getAPI();
