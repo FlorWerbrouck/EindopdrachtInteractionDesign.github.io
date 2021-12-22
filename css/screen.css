@@ -253,6 +253,13 @@ input::placeholder {
     padding-left: 48px;
 }
 
+.o-revert-color {
+    background-color:var(--color-front);
+    color: var(--color-back) !important;
+    border-radius: 15px;
+    padding: 20px;
+}
+
 /* size modifiers */
 
 .o-row--lg {
