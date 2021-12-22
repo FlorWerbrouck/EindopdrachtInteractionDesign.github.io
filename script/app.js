@@ -132,9 +132,8 @@ let getLaunches = async () => {
 			chart: {
 			},
 			bars: "vertical",
-			vAxis: { showTextEvery:1 },
 			hAxis: { format: "", showTextEvery: 1 },
-			height: 400,
+			height: 300,
 			colors: ["#430653"],
 			legend: { position: "none" }
 		};
@@ -156,9 +155,30 @@ let getAPI = async () => {
 
 };
 
+function setTheme(themeName) {
+	localStorage.setItem('theme', themeName);
+	document.documentElement.className = themeName;
+}
 
+function toggleTheme() {
+	if (localStorage.getItem('theme') === 'theme-dark') {
+		setTheme('theme-light');
+	} else {
+		setTheme('theme-dark');
+	}
+}
+
+(function () {
+	if (localStorage.getItem('theme') === 'theme-dark') {
+		setTheme('theme-dark');
+	} else {
+		setTheme('theme-light');
+	}
+})();
 
 document.addEventListener('DOMContentLoaded', function() {
+	
+
 	htmlFlight = document.querySelector('.js-flight');
 	htmlTime = document.querySelector('.js-time');
 	htmlDate = document.querySelector('.js-date');
